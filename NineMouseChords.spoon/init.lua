@@ -6,7 +6,9 @@ obj.version = "0.1"
 obj.author = "colin <colin@chb.xyz>"
 obj.license = "BSD-2-Clause - https://opensource.org/license/bsd-2-clause"
 obj.homepage = "https://github.com/colinhb/NineMouseChords"
+
 -- Constants
+local DEBUG = false
 local MIDDLE_BUTTON = 2
 local KEYSTROKE_DELAY = 0.0001
 local excludedApps = {"acme"}
@@ -18,6 +20,7 @@ obj.logTime = { lastTime = nil, lastClock = nil }
 
 -- Log message with timing delta since last log
 function obj:ulog(message)
+    if not DEBUG then return end
     local currTime = os.time()
     local currClock = os.clock()
     
@@ -41,11 +44,13 @@ end
 
 local chordActions = {
     middle = handleChord(function()
+        obj:ulog("Executing cut chord")
         hs.eventtap.keyStroke({"cmd"}, "c", KEYSTROKE_DELAY)
         hs.eventtap.keyStroke({}, "delete", KEYSTROKE_DELAY)
     end),
     
     right = handleChord(function()
+        obj:ulog("Executing paste chord")
         hs.eventtap.keyStroke({"cmd"}, "v")
     end)
 }
@@ -63,24 +68,33 @@ end
 local tapConfigs = {
     leftMouseDown = {
         events = { hs.eventtap.event.types.leftMouseDown },
-        fn = function(self) self.isChording = true; return false end
+        fn = function(self) 
+            self:ulog("Left mouse down - starting chord")
+            self.isChording = true
+            return false 
+        end
     },
     leftMouseUp = {
         events = { hs.eventtap.event.types.leftMouseUp },
-        fn = function(self) self.isChording = false; return false end
+        fn = function(self) 
+            self:ulog("Left mouse up - ending chord")
+            self.isChording = false
+            return false 
+        end
     },
     middleMouseDown = {
         events = { hs.eventtap.event.types.otherMouseDown },
         fn = function(self, e)
             local button = e:getProperty(hs.eventtap.event.properties["mouseEventButtonNumber"])
-            return self.isChording and button == MIDDLE_BUTTON
-                and chordActions.middle(self)
-                or false
+            local isChord = self.isChording and button == MIDDLE_BUTTON
+            self:ulog(string.format("Middle button %d - chord: %s", button, isChord))
+            return isChord and chordActions.middle(self) or false
         end
     },
     rightMouseDown = {
         events = { hs.eventtap.event.types.rightMouseDown },
         fn = function(self)
+            self:ulog(string.format("Right button - chord: %s", self.isChording))
             return self.isChording and chordActions.right(self)
         end
     }

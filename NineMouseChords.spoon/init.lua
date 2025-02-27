@@ -8,7 +8,7 @@ obj.license = "BSD-2-Clause - https://opensource.org/license/bsd-2-clause"
 obj.homepage = "https://github.com/colinhb/NineMouseChords"
 
 -- Constants
-local DEBUG = true
+local DEBUG = false
 local MIDDLE_BUTTON = 2
 local KEYSTROKE_DELAY = 0.0001
 

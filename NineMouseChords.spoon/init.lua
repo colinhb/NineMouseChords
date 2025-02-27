@@ -8,15 +8,14 @@ obj.license = "BSD-2-Clause - https://opensource.org/license/bsd-2-clause"
 obj.homepage = "https://github.com/colinhb/NineMouseChords"
 
 -- Constants
-local DEBUG = false
+local DEBUG = true
 local MIDDLE_BUTTON = 2
 local KEYSTROKE_DELAY = 0.0001
-local excludedApps = {"acme"}
 
 -- State
 obj.isChording = false
-
 obj.logTime = { lastTime = nil, lastClock = nil }
+obj.blacklist = {"acme"}  -- Moved from local variable to obj property
 
 -- Log message with timing delta since last log
 function obj:ulog(message)
@@ -127,13 +126,19 @@ function obj:init()
         end)
     end
 
+    -- Log the blacklist configuration
+    self:ulog("Configured blacklist:")
+    for i, app in ipairs(self.blacklist) do
+        self:ulog(string.format("  %d. %s", i, app))
+    end
+
     -- Setup application watcher
     self.appWatcher = hs.application.watcher.new(function(appName, eventType)
         if eventType == hs.application.watcher.activated then
             local appTitle = hs.application.frontmostApplication():title()
             self:ulog(string.format("App activated: %s", appTitle))
             
-            for _, excludedApp in ipairs(excludedApps) do
+            for _, excludedApp in ipairs(self.blacklist) do
                 if appTitle:lower() == excludedApp:lower() then
                     self:ulog(string.format("Disabling for excluded app: %s", appTitle))
                     self:stopTaps()
@@ -146,6 +151,20 @@ function obj:init()
     end)
     
     self:ulog("Initialized NineMouseChords")
+    return self
+end
+
+--- NineMouseChords:excludeApps(appTable)
+--- Method
+--- Extends the blacklist with additional application names
+--- Parameters:
+---  * appTable - A table of application names to exclude
+function obj:excludeApps(appTable)
+    self:ulog("Extending blacklist with new apps")
+    for _, app in ipairs(appTable) do
+        table.insert(self.blacklist, app)
+        self:ulog(string.format("Added %s to blacklist", app))
+    end
     return self
 end
 

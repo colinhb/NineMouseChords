@@ -6,7 +6,7 @@ A [Hammerspoon](http://www.hammerspoon.org) ["Spoon"](https://github.com/Hammers
 
 Acme's mouse chords become second nature. Though I am also a vi person ([nvi](https://en.wikipedia.org/wiki/Nvi) in particlar), it's hard to beat the flow of working inside Acme, and a big part of that is its use of the mouse. 
 
-This Spoon brings a a few text manipulation mouse chords to macOS, eliminating a tiny bit of mental context switching when using the Acme editor on macOS.
+This Spoon brings a few text manipulation mouse chords to macOS, eliminating a tiny bit of mental context switching when using Acme on macOS.
 
 ## Installation
 
@@ -31,13 +31,13 @@ Mouse chording in NineMouseChords works similarly to Plan 9's Acme editor:
    - Click the **right button to paste previously cut text**
 3. **Release the left button** to complete the operation
 
-**Note**: To copy text ("snarf" in Plan 9 parlance), while the left mouse button is down, you cut (middle button) and paste (right button) the same text back to the position you cut it from. You can then release the left mouse button, and use the paste chord to copy the text elsewhere.
+**Note**: To copy text ("snarf" in Plan 9 parlance), while the left mouse button is down, you cut (middle button) and paste (right button) the same text back. You can then release the left mouse button, and use the paste chord to paste the "snarfed" text elsewhere.
 
 You can find a helpful diagram at [http://acme.cat-v.org/mouse](http://acme.cat-v.org/mouse).
 
 ### Blacklist
 
-Since the Acme editor handles mouse chords itself (and richer set than are implmented in this Spoon), we don't handle chording when Acme is focused.
+Since the Acme editor handles mouse chords itself (and richer set than are implmented in this Spoon), we don't handle chording when Acme is focused. The app is "blacklisted".
 
 You can exclude other apps using the `:excludeApps()` method:
 
@@ -47,7 +47,7 @@ hs.loadSpoon("NineMouseChords")
   :start()
 ```
 
-Besides allowing specialized apps to handle mouse events themselves, or exclusing apps where cut and paste operations don't make sense, please see the [note on implementation](#1-implementation) below for why you may want to blacklist certain apps.
+Blacklisting allows you to ensure specialized apps to handle mouse events themselves, or prevent cut and paste operations in contexts where they don't make sense. Also, please see the [note on implementation](#1-implementation) below for another reason you may want to blacklist certain apps.
 
 ## Notes
 

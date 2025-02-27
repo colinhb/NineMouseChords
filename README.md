@@ -33,6 +33,10 @@ Mouse chording in NineMouseChords works similarly to Plan 9's Acme editor:
 
 **Note**: To copy text ("snarf" in Plan 9 parlance), while the left mouse button is down, you cut (middle button) and paste (right button) the same text back. You can then release the left mouse button, and use the paste chord to paste the "snarfed" text elsewhere.
 
+Here is a crappy gif demo of chording outside of Acme:
+
+![A crappy gif demo](demo.gif)
+
 You can find a helpful diagram at [http://acme.cat-v.org/mouse](http://acme.cat-v.org/mouse).
 
 ### Blacklist

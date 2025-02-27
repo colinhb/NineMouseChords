@@ -37,9 +37,7 @@ You can find a helpful diagram at [http://acme.cat-v.org/mouse](http://acme.cat-
 
 ### Blacklist
 
-Since the Acme editor handles mouse chords itself (and richer set than are implmented in this Spoon), we don't handle chording when Acme is focused. The app is "blacklisted".
-
-You can exclude other apps using the `:excludeApps()` method:
+Since the Acme editor handles mouse chords itself (and richer set than are implmented in this Spoon), we don't handle chording when Acme is focused; the app is "blacklisted". You can blacklist other apps using the `:excludeApps()` method:
 
 ```lua
 hs.loadSpoon("NineMouseChords")
@@ -47,7 +45,7 @@ hs.loadSpoon("NineMouseChords")
   :start()
 ```
 
-Blacklisting allows you to ensure specialized apps to handle mouse events themselves, or prevent cut and paste operations in contexts where they don't make sense. Also, please see the [note on implementation](#1-implementation) below for another reason you may want to blacklist certain apps.
+Beesides allowing specialized apps to handle mouse events themselves, please see the [note on implementation](#1-implementation) below for other reasons you may want to blacklist certain apps.
 
 ## Notes
 
